@@ -9,3 +9,7 @@ Uglifier modifies textures through several steps:
 * **Hue Shifting:** alters color tones and increases saturation.
 * **Noise Injection:** adds some random noise to pixels.
 * **Color Reduction:** lower color resolution for textures.
+
+## Downloads
+* **Resource Pack:** https://modrinth.com/resourcepack/uglified
+* **Minecraft Mod:** https://modrinth.com/mod/uglifier
