@@ -1,3 +1,5 @@
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/7277aab7-fbd6-4885-a6e8-040878f12b18" />
+
 ## How To Use
 Create an `input` and `output` folder and put all the textures in the `input` folder, and run the script to generate the uglified textures.
 
