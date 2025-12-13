@@ -23,13 +23,13 @@ def lerp(start: float, end: float, alpha: float) -> float:
 
 # Offset/spread pixels randomly in a texture
 def spread_pixels(image: Image):
-  new_image = image.copy()
+  src_image = image.copy()
   width, height = image.size
   amount = int(math.sqrt(width * height) * spread_amount_scale)
   for i in range(amount):
     x = random.randint(0, width - 1)
     y = random.randint(0, height - 1)
-    pixel = image.getpixel((x, y))
+    pixel = src_image.getpixel((x, y))
 
     for j in range(5):
       x_plot = x + random.randint(-2, 2)
@@ -38,12 +38,11 @@ def spread_pixels(image: Image):
       if y_plot < 0 or y_plot >= height: continue
       if x_plot == x or y_plot == y: continue
 
-      pixel_plot = image.getpixel((x_plot, y_plot))
-      new_image.putpixel((x_plot, y_plot), pixel)
-      new_image.putpixel((x, y), pixel_plot)
+      pixel_plot = src_image.getpixel((x_plot, y_plot))
+      image.putpixel((x_plot, y_plot), pixel)
+      image.putpixel((x, y), pixel_plot)
       break
-
-  return new_image
+  return
 
 # Shift hue in a texture
 def shift_hue(image: Image):
@@ -144,7 +143,7 @@ for root, dirs, files in os.walk(input_dir):
       if image.mode != 'RGBA':
         image = image.convert('RGBA')
 
-      image = spread_pixels(image)
+      spread_pixels(image)
       shift_hue(image)
       make_noise(image)
       low_color(image)
