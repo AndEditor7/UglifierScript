@@ -154,9 +154,11 @@ for root, dirs, files in os.walk(input_dir):
       # Open the image file
       image = Image.open(input_path)
 
+      # Convert image format to RGBA
       if image.mode != 'RGBA':
         image = image.convert('RGBA')
 
+      # Start uglifying
       spread_pixels(image)
       shift_hue(image)
       make_noise(image)
