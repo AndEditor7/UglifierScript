@@ -113,12 +113,9 @@ def low_color(image: Image):
     for y in range(height):
       old_pixel = image.getpixel((x, y))
       new_pixel = tuple((int(p / color_reduction) * color_reduction) for p in old_pixel[:3])
-      if image.mode == "RGBA":
-        p = list(new_pixel)
-        p.append(old_pixel[3])
-        new_pixel = tuple(p)
-      else:
-        new_pixel = new_pixel
+      p = list(new_pixel)
+      p.append(old_pixel[3])
+      new_pixel = tuple(p)
       image.putpixel((x, y), new_pixel)
   return
 
