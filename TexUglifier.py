@@ -21,6 +21,13 @@ def clamp(value: float, min_value: float, max_value: float) -> float:
 def lerp(start: float, end: float, alpha: float) -> float:
   return start + alpha * (end - start)
 
+def gLerp(start: float, end: float, alpha: float, gamma: float = 2.2) -> float:
+  a_lin = start ** gamma
+  b_lin = end ** gamma
+  result_lin = (1.0 - alpha) * a_lin + alpha * b_lin
+  return result_lin ** (1.0 / gamma)
+
+
 # Offset/spread pixels randomly in a texture
 def spread_pixels(image: Image):
   width, height = image.size
@@ -71,9 +78,9 @@ def shift_hue(image: Image):
 
       # Convert HSV back to RGB
       rn, gn, bn = colorsys.hsv_to_rgb(h, s, v)
-      rn = lerp(ro, rn, hue_shift_apply)
-      gn = lerp(go, gn, hue_shift_apply)
-      bn = lerp(bo, bn, hue_shift_apply)
+      rn = gLerp(ro, rn, hue_shift_apply)
+      gn = gLerp(go, gn, hue_shift_apply)
+      bn = gLerp(bo, bn, hue_shift_apply)
 
       # Convert RGB values back to integer range (0–255)
       if image.mode == "RGBA":
