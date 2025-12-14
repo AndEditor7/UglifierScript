@@ -6,7 +6,7 @@ import shutil
 from PIL import Image
 
 # VARIABLES
-spread_amount_scale = 1.6
+spread_amount_scale = 1.5
 saturation_addition = 0.15
 hue_shift_apply = 0.3
 noise_percentage = 0.2
@@ -23,24 +23,31 @@ def lerp(start: float, end: float, alpha: float) -> float:
 
 # Offset/spread pixels randomly in a texture
 def spread_pixels(image: Image):
-  src_image = image.copy()
   width, height = image.size
   amount = int(math.sqrt(width * height) * spread_amount_scale)
+  pixels = set()
   for i in range(amount):
-    x = random.randint(0, width - 1)
-    y = random.randint(0, height - 1)
-    pixel = src_image.getpixel((x, y))
+    for j in range(10):
+      x = random.randint(0, width - 1)
+      y = random.randint(0, height - 1)
+      if x + y * width in pixels: continue
+      pixel = image.getpixel((x, y))
 
-    for j in range(5):
-      x_plot = x + random.randint(-2, 2)
-      y_plot = y + random.randint(-2, 2)
-      if x_plot < 0 or x_plot >= width: continue
-      if y_plot < 0 or y_plot >= height: continue
-      if x_plot == x or y_plot == y: continue
+      # Do ten attempts to swap the pixel
+      for l in range(10):
+        x_plot = x + random.randint(-2, 2)
+        y_plot = y + random.randint(-2, 2)
+        if x_plot < 0 or x_plot >= width: continue
+        if y_plot < 0 or y_plot >= height: continue
+        if x_plot == x or y_plot == y: continue
+        if x_plot + y_plot * width in pixels: continue
 
-      pixel_plot = src_image.getpixel((x_plot, y_plot))
-      image.putpixel((x_plot, y_plot), pixel)
-      image.putpixel((x, y), pixel_plot)
+        pixel_plot = image.getpixel((x_plot, y_plot))
+        image.putpixel((x_plot, y_plot), pixel)
+        image.putpixel((x, y), pixel_plot)
+        pixels.add(x_plot + y_plot * width)
+        pixels.add(x + y * width)
+        break
       break
   return
 
